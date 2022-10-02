@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% block css %}
+<style>
+    .card {
+        background-color: antiquewhite;
+        width: 100px;
+        height: 100px;
+        padding: 50px;
+        margin: 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 15px 25px rgba(0, 0, 0, .6);
+        border-radius: 10px;
+    }
+
+    .cards {
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        width: 90%;
+        margin: 0 auto;
+        max-width: 80rem;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+    }
+
+    .title {
+        font-size: 18px;
+    }
+
+    .icons {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .icon {
+        padding: 5px;
+        margin-top: 20px;
+    }
+
+    a {
+        text-decoration: none;
+    }
+</style>
+
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+{% endblock css %}
+
+{% block content %}
+<h1>Welcome {{user}}</h1>
+{% if todos|length == 0 %}
+<h2>You don't have any to-dos
+    <a href="/addtodo">Add one</a>
+</h2>
+{% else %}
+<h2>Pending</h2>
+<div class="pending">
+
+    <div class="cards">
+        {% for todo in todos %}
+        {% if todo.status == 'P'%}
+        <div class="card">
+            <div class="title">
+                {{todo.title}}
+            </div>
+            <div class="icons">
+
+                <a href="/delete-todo/{{todo.id}}">
+                    <i class='fa fa-trash icon'></i>
+                </a>
+                {% if todo.status == 'P'%}
+                <a href="/change-status/{{todo.id}}/C" title="Mark Completed" class="icon">✅</a>
+                {% else %}
+                <a href="/change-status/{{todo.id}}/P" title="Mark Pending" class="icon">🕒</a>
+                {% endif %}
+            </div>
+
+        </div>
+        {%endif%}
+        {% endfor %}
+    </div>
+</div>
+<div class="completed">
+
+    <h2>Completed</h2>
+    <div class="cards">
+        {% for todo in todos %}
+        {% if todo.status == 'C'%}
+        <div class="card">
+            <div class="title">
+                {{todo.title}}
+
+            </div>
+
+            <div class="icons">
+
+                <a href="/delete-todo/{{todo.id}}">
+                    <i class='fa fa-trash icon'></i>
+                </a>
+                {% if todo.status == 'P'%}
+                <a href="/change-status/{{todo.id}}/C" title="Mark Completed" class="icon">✅</a>
+                {% else %}
+                <a href="/change-status/{{todo.id}}/P" title="Mark Pending" class="icon">🕒</a>
+                {%endif%}
+            </div>
+        </div>
+        {%endif%}
+        {% endfor %}
+    </div>
+</div>
+</div>
+{% endif %}
+{% endblock content %}
